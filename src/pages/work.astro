@@ -1,0 +1,39 @@
+---
+import { getCollection } from 'astro:content';
+
+import BaseLayout from '../layouts/BaseLayout.astro';
+
+import ContactCTA from '../components/ContactCTA.astro';
+import PortfolioPreview from '../components/PortfolioPreview.astro';
+import Hero from '../components/Hero.astro';
+import Grid from '../components/Grid.astro';
+
+const projects = (await getCollection('work')).sort(
+	(a, b) => b.data.publishDate.valueOf() - a.data.publishDate.valueOf()
+);
+---
+
+<BaseLayout
+	title="Services | JMV"
+	description="Learn about JMV most recent works"
+>
+	<div class="stack gap-20">
+		<main class="wrapper stack gap-8">
+			<Hero
+				title="Apartment & Office Building Cleaning Services"
+				tagline="Don’t let the quality of your building’s common areas decline by not investing in consistent cleaning and disinfecting services. It’s very important that apartments, condominiums and office buildings maintain a clean and reputable image.  The common areas can take a beating over time.  Heavy foot traffic can lead to dirty carpeting and wear and tear on elevator s and lounge areas.  We can help you implement a cleaning plan that focuses on providing a top-quality look and feel of your building."
+				align="start"
+			/>
+			<Grid variant="offset">
+				{
+					projects.map((project) => (
+						<li>
+							<PortfolioPreview project={project} />
+						</li>
+					))
+				}
+			</Grid>
+		</main>
+		<ContactCTA />
+	</div>
+</BaseLayout>
